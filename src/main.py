@@ -10,7 +10,7 @@ def random_generated_number():
 
 # Get user's name
 def get_user_name():
-    return input("Hello! What's your name? ") 
+    return input("Hello! What's your name? ")
 
 # Explain the game instructions to users
 def game_instructions(user_name):
@@ -29,16 +29,16 @@ def get_user_guess():
 def check_user_guess(user_guess, number_to_guess):
     if user_guess < number_to_guess:
         print("Too low! Give it another try.")
-        return False
+        return False, "low"
     elif user_guess > number_to_guess:
         print("Too high! Try again.")
-        return False
+        return False, "high"
     else:
-        return True
+        return True, "correct"
 
-# Computer guess logic
+# Computer guess logic with learning from user's guesses
 def computer_guess(min_val, max_val):
-    return random.randint(min_val, max_val) 
+    return random.randint(min_val, max_val)
 
 # Main function to play the game
 def play_game(user_name):
@@ -46,7 +46,7 @@ def play_game(user_name):
     guesses_of_users = []
     guesses_of_computer = []
 
-    # Initialize min_val and max_val for the computer's guesses
+    # Initialize the range for the computer's guesses
     min_val, max_val = 1, 100
 
     while True:
@@ -54,12 +54,19 @@ def play_game(user_name):
         print(f"Alright, {user_name}, it's your time to shine!")
         user_guess = get_user_guess()
 
-        if check_user_guess(user_guess, number_to_guess):
+        correct, feedback = check_user_guess(user_guess, number_to_guess)
+        if correct:
             print(f"\nWow, {user_name}! You nailed it! You guessed the number!")
-            print("Here are all your guesses:", guesses_of_users)  
+            print("Here are all your guesses:", guesses_of_users)
             break  # Breaks the loop if the number is guessed correctly
 
-        guesses_of_users.append(user_guess)  
+        guesses_of_users.append(user_guess)
+        
+        # Adjust the range for the computer's next guess based on user feedback
+        if feedback == "low":
+            min_val = max(min_val, user_guess + 1)
+        elif feedback == "high":
+            max_val = min(max_val, user_guess - 1)
 
         # Print a separator line
         print("\n" + "-" * 50 + "\n")
@@ -70,21 +77,22 @@ def play_game(user_name):
         computer_guess_val = computer_guess(min_val, max_val)
         print(f"My guess is: {computer_guess_val}")
 
-        if check_user_guess(computer_guess_val, number_to_guess):
+        correct, feedback = check_user_guess(computer_guess_val, number_to_guess)
+        if correct:
             print("\nI got it right! I, the computer, guessed the number!")
             print("Here are all my guesses:", guesses_of_computer)
             break  # Breaks the loop if the computer guesses the number correctly
 
         guesses_of_computer.append(computer_guess_val)
+        
+        # Adjust the range for the computer's next guess based on computer feedback
+        if feedback == "low":
+            min_val = max(min_val, computer_guess_val + 1)
+        elif feedback == "high":
+            max_val = min(max_val, computer_guess_val - 1)
 
         # Print a separator line
         print("\n" + "-" * 50 + "\n")
-
-        # Adjust the range for the computer's next guess based on feedback
-        if computer_guess_val < number_to_guess:
-            min_val = computer_guess_val + 1
-        elif computer_guess_val > number_to_guess:
-            max_val = computer_guess_val - 1
 
     # Ask the player if they want to play again
     play_again = input("\nWould you like to play again? (yes/no): ").strip().lower()
