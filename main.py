@@ -30,13 +30,13 @@ def get_user_guess():
             print("Oops! That doesn't look like a valid number.")
             print("Please enter an integer (a whole number).")
 
-# User guess logic
-def check_user_guess(user_guess, number_to_guess):
-    """Check if the user's guess matches the number to guess."""
-    if user_guess < number_to_guess:
+# Guess checking logic
+def check_guess(guess, number_to_guess):
+    """Check if the given guess matches the number to guess."""
+    if guess < number_to_guess:
         print("Too low! Give it another try.")
         return False, "low"
-    if user_guess > number_to_guess:
+    if guess > number_to_guess:
         print("Too high! Try again.")
         return False, "high"
     return True, "correct"
@@ -68,7 +68,7 @@ def play_game(user_name):
         user_guess = get_user_guess()
         total_attempts += 1
 
-        correct, feedback = check_user_guess(user_guess, number_to_guess)
+        correct, feedback = check_guess(user_guess, number_to_guess)
         guesses_of_users.append(user_guess)
 
         if correct:
@@ -89,7 +89,7 @@ def play_game(user_name):
         computer_guess_val = computer_guess(min_val, max_val)
         print(f"My guess is: {computer_guess_val}")
 
-        correct, feedback = check_user_guess(computer_guess_val, number_to_guess)
+        correct, feedback = check_guess(computer_guess_val, number_to_guess)
         guesses_of_computer.append(computer_guess_val)
 
         if correct:

@@ -3,7 +3,7 @@
 import unittest
 from unittest.mock import patch
 
-from main import check_user_guess, computer_guess, random_generated_number, get_user_guess
+from main import check_guess, computer_guess, random_generated_number, get_user_guess
 
 class TestGame(unittest.TestCase):
     """Unit tests for the 'Guess the Number' game functions."""
@@ -12,11 +12,11 @@ class TestGame(unittest.TestCase):
     def test_check_user_guess(self):
         """Test the check_user_guess function."""
         # Test when the guess is too low
-        self.assertEqual(check_user_guess(50, 100), (False, "low"))
+        self.assertEqual(check_guess(50, 100), (False, "low"))
         # Test when the guess is too high
-        self.assertEqual(check_user_guess(150, 100), (False, "high"))
+        self.assertEqual(check_guess(150, 100), (False, "high"))
         # Test when the guess is correct
-        self.assertEqual(check_user_guess(100, 100), (True, "correct"))
+        self.assertEqual(check_guess(100, 100), (True, "correct"))
 
     def test_computer_guess(self):
         """Test the computer_guess function."""
